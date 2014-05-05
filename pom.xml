@@ -7,6 +7,22 @@
     <groupId>de.sh0k</groupId>
     <artifactId>xml-event-limit-generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <description>
+        The XmlEventLimitGenerator is a Java library to generate xml strings.
+        You push documents (or objects, like you want) to the xml generator and the generator proceeds the pushed document.
+        While the push sequence it automatically generates an average size of all documents.
+        The benefit of this library is, that you can generate xml strings with a predefined max size.
+        This max size relates to the average document size, that is calculated on the fly, so there is no 100% guarantee,
+        that no xml string will pass the max size, but there is a factor that can be specified as buffer.
+    </description>
+
+    <developers>
+        <developer>
+            <id>dom.weidenfeld@gmail.com</id>
+            <name>Dominik Weidenfeld</name>
+            <email>dom.weidenfeld@gmail.com</email>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
