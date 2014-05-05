@@ -9,10 +9,9 @@ import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 /**
- * Generates an xml string event oriented with a maximal size of the final xml string.
+ * Generates an xml byte array event oriented with a maximal size of the final xml byte array.
  *
  * @param <T> The object type that should be mapped later on
  */
@@ -124,14 +123,13 @@ public class XMLEventLimitGenerator<T> {
      * Resets the writer and flushes all the content to the {@link #documentWriter}.
      *
      * @throws XMLStreamException           If the stream could not be wrote to the writer.
-     * @throws UnsupportedEncodingException the default encoding is UTF-8 and cannot be changed.
      */
-    void resetWriter() throws XMLStreamException, UnsupportedEncodingException {
+    void resetWriter() throws XMLStreamException {
         writer.add(xmlEventFactory.createEndElement("", "", rootNode));
         writer.add(xmlEventFactory.createEndDocument());
         writer.flush();
         if (documentCount > 0) {
-            documentWriter.write(os.toString("UTF-8"));
+            documentWriter.write(os.toByteArray());
             documentCount = 0;
         }
     }
@@ -141,9 +139,8 @@ public class XMLEventLimitGenerator<T> {
      *
      * @param document the document
      * @throws XMLStreamException           if some elements does not fit correctly to the stream.
-     * @throws UnsupportedEncodingException the default encoding is UTF-8 and cannot be changed.
      */
-    public void push(final T document) throws XMLStreamException, UnsupportedEncodingException {
+    public void push(final T document) throws XMLStreamException {
         final int completeSize = os.size();
         if (averageSize == 0) {
             averageSize = (long) (completeSize * exceptionFactor);
@@ -196,15 +193,15 @@ public class XMLEventLimitGenerator<T> {
     }
 
     /**
-     * The Document Writer Interface, that specifies the writer of the finally xml string (fired as event).
+     * The Document Writer Interface, that specifies the writer of the finally xml byte array (fired as event).
      */
     public interface DocumentWriter {
 
         /**
-         * Write the xml string to something you want.
+         * Write the xml byte array to something you want.
          *
-         * @param xmlString the xml string
+         * @param xml the xml as byte
          */
-        void write(final String xmlString);
+        void write(final byte[] xml);
     }
 }

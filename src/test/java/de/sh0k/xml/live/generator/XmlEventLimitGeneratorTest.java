@@ -105,8 +105,8 @@ public class XmlEventLimitGeneratorTest {
                     }
                 }, new XMLEventLimitGenerator.DocumentWriter() {
             @Override
-            public void write(final String xmlString) {
-                buffer.append(xmlString);
+            public void write(final byte[] xml) {
+                buffer.append(new String(xml));
             }
         }
         );
