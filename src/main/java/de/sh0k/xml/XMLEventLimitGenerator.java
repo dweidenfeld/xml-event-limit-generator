@@ -1,6 +1,6 @@
 
 
-package de.sh0k.xml.live.generator;
+package de.sh0k.xml;
 
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;

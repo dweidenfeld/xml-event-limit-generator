@@ -1,4 +1,4 @@
-package de.sh0k.xml.live.generator;
+package de.sh0k.xml;
 
 import lombok.Getter;
 import lombok.experimental.Builder;
