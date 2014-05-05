@@ -14,7 +14,7 @@ public class XmlEventLimitGeneratorTest {
     @Test
     public void testValidXml() throws Exception {
         final StringBuffer buffer = new StringBuffer(200);
-        final XMLEventLimitGenerator<Document> generator = newGenerator(200, buffer);
+        final XMLGenerator<Document> generator = newGenerator(200, buffer);
         generator.push(Document.builder().id(1).title("Title").description("Description").build());
         generator.close();
         assertEquals("xml must match",
@@ -28,7 +28,7 @@ public class XmlEventLimitGeneratorTest {
     @Test
     public void testValidXmlForTwo() throws Exception {
         final StringBuffer buffer = new StringBuffer(250);
-        final XMLEventLimitGenerator<Document> generator = newGenerator(250, buffer);
+        final XMLGenerator<Document> generator = newGenerator(250, buffer);
         generator.push(Document.builder().id(1).title("Title").description("Description").build());
         generator.push(Document.builder().id(2).title("Title").description("Description").build());
         generator.close();
@@ -45,7 +45,7 @@ public class XmlEventLimitGeneratorTest {
     @Test
     public void testValidXmlForTwoWithLimitExceeded() throws Exception {
         final StringBuffer buffer = new StringBuffer(200);
-        final XMLEventLimitGenerator<Document> generator = newGenerator(200, buffer);
+        final XMLGenerator<Document> generator = newGenerator(200, buffer);
         generator.push(Document.builder().id(1).title("Title").description("Description").build());
         generator.push(Document.builder().id(2).title("Title").description("Description").build());
         generator.close();
@@ -66,7 +66,7 @@ public class XmlEventLimitGeneratorTest {
     @Test
     public void testLimitExceeded() throws Exception {
         final StringBuffer buffer = new StringBuffer(250);
-        final XMLEventLimitGenerator<Document> generator = newGenerator(250, buffer);
+        final XMLGenerator<Document> generator = newGenerator(250, buffer);
 
         generator.push(Document.builder().id(1).title("Title").description("Description").build());
         assertEquals("buffer should be empty", 0, buffer.length());

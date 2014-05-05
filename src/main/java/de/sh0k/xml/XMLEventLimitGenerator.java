@@ -1,5 +1,3 @@
-
-
 package de.sh0k.xml;
 
 import javax.xml.stream.XMLEventFactory;
@@ -15,7 +13,7 @@ import java.io.OutputStream;
  *
  * @param <T> The object type that should be mapped later on
  */
-public class XMLEventLimitGenerator<T> {
+public class XMLEventLimitGenerator<T> implements XMLGenerator<T> {
 
     /**
      * The max size that should not be exceeded.
@@ -75,10 +73,10 @@ public class XMLEventLimitGenerator<T> {
      * @param rootNode       {@link #rootNode}
      * @param documentMapper {@link #documentMapper}
      * @param documentWriter {@link #documentWriter}
-     * @throws XMLStreamException XML cannot be streamed (or opened)
+     * @throws XMLException XML cannot be streamed (or opened)
      */
     public XMLEventLimitGenerator(final long maxSize, final String rootNode, final DocumentMapper<T> documentMapper,
-                                  final DocumentWriter documentWriter) throws XMLStreamException {
+                                  final DocumentWriter documentWriter) throws XMLException {
         this(maxSize, rootNode, documentMapper, documentWriter, 1.1);
     }
 
@@ -90,10 +88,11 @@ public class XMLEventLimitGenerator<T> {
      * @param documentMapper  {@link #documentMapper}
      * @param documentWriter  {@link #documentWriter}
      * @param exceptionFactor {@link #exceptionFactor}
-     * @throws XMLStreamException XML cannot be streamed (or opened)
+     * @throws XMLException XML cannot be streamed (or opened)
      */
     public XMLEventLimitGenerator(final long maxSize, final String rootNode, final DocumentMapper<T> documentMapper,
-                                  final DocumentWriter documentWriter, final double exceptionFactor) throws XMLStreamException {
+                                  final DocumentWriter documentWriter, final double exceptionFactor)
+            throws XMLException {
         this.maxSize = maxSize;
         this.rootNode = rootNode;
         this.exceptionFactor = exceptionFactor;
@@ -108,39 +107,43 @@ public class XMLEventLimitGenerator<T> {
      *
      * @param stream the output stream that should be used for the writer.
      * @return a new instance of {@link javax.xml.stream.XMLEventWriter}
-     * @throws XMLStreamException If the writer cannot be instantiated
+     * @throws XMLException If the writer cannot be instantiated
      */
-    XMLEventWriter getWriter(final OutputStream stream) throws XMLStreamException {
+    private XMLEventWriter getWriter(final OutputStream stream) throws XMLException {
         xmlEventFactory = XMLEventFactory.newInstance();
         final XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
-        final XMLEventWriter writer = xmlOutputFactory.createXMLEventWriter(stream);
-        writer.add(xmlEventFactory.createStartDocument("UTF-8", "1.0"));
-        writer.add(xmlEventFactory.createStartElement("", "", rootNode));
+        final XMLEventWriter writer;
+        try {
+            writer = xmlOutputFactory.createXMLEventWriter(stream);
+            writer.add(xmlEventFactory.createStartDocument("UTF-8", "1.0"));
+            writer.add(xmlEventFactory.createStartElement("", "", rootNode));
+        } catch (final XMLStreamException e) {
+            throw new XMLException(e);
+        }
         return writer;
     }
 
     /**
      * Resets the writer and flushes all the content to the {@link #documentWriter}.
      *
-     * @throws XMLStreamException           If the stream could not be wrote to the writer.
+     * @throws XMLException If the stream could not be wrote to the writer.
      */
-    void resetWriter() throws XMLStreamException {
-        writer.add(xmlEventFactory.createEndElement("", "", rootNode));
-        writer.add(xmlEventFactory.createEndDocument());
-        writer.flush();
-        if (documentCount > 0) {
-            documentWriter.write(os.toByteArray());
-            documentCount = 0;
+    private void resetWriter() throws XMLException {
+        try {
+            writer.add(xmlEventFactory.createEndElement("", "", rootNode));
+            writer.add(xmlEventFactory.createEndDocument());
+            writer.flush();
+            if (documentCount > 0) {
+                documentWriter.write(os.toByteArray());
+                documentCount = 0;
+            }
+        } catch (final XMLStreamException e) {
+            throw new XMLException(e);
         }
     }
 
-    /**
-     * Push a new document to the stream by mapping it with the {@link #documentMapper}.
-     *
-     * @param document the document
-     * @throws XMLStreamException           if some elements does not fit correctly to the stream.
-     */
-    public void push(final T document) throws XMLStreamException {
+    @Override
+    public void push(final T document) throws XMLException {
         final int completeSize = os.size();
         if (averageSize == 0) {
             averageSize = (long) (completeSize * exceptionFactor);
@@ -153,7 +156,11 @@ public class XMLEventLimitGenerator<T> {
             os = new ByteArrayOutputStream();
             writer = getWriter(os);
         }
-        documentMapper.map(writer, xmlEventFactory, document);
+        try {
+            documentMapper.map(writer, xmlEventFactory, document);
+        } catch (final XMLStreamException e) {
+            throw new XMLException("cannot map document", e);
+        }
         documentCount++;
         final int documentSize = (int) ((os.size() - completeSize) * exceptionFactor);
         if (documentSize > averageSize) {
@@ -161,16 +168,17 @@ public class XMLEventLimitGenerator<T> {
         }
     }
 
-    /**
-     * Close all writers and flushes the last content (if there is some) to {@link #documentWriter}.
-     *
-     * @throws XMLStreamException if the writers cannot be closed gracefully
-     * @throws IOException        if the output stream cannot be closed gracefully
-     */
-    public void close() throws XMLStreamException, IOException {
+    @Override
+    public void close() throws XMLException {
         resetWriter();
-        writer.close();
-        os.close();
+        try {
+            writer.close();
+            os.close();
+        } catch (final XMLStreamException e) {
+            throw new XMLException("cannot close xml event writer", e);
+        } catch (final IOException e) {
+            throw new XMLException("cannot close binary stream", e);
+        }
     }
 
     /**
