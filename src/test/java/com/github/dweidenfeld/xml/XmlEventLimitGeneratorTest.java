@@ -1,10 +1,12 @@
-package de.sh0k.xml;
+package com.github.dweidenfeld.xml;
 
 import org.junit.Test;
 
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
+
+import java.nio.charset.Charset;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -18,7 +20,7 @@ public class XmlEventLimitGeneratorTest {
         generator.push(Document.builder().id(1).title("Title").description("Description").build());
         generator.close();
         assertEquals("xml must match",
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<?xml version=\"1.0\"?>" +
                         "<documents>" +
                         "<document><id>1</id><title>Title</title><description>Description</description></document>" +
                         "</documents>",
@@ -33,7 +35,7 @@ public class XmlEventLimitGeneratorTest {
         generator.push(Document.builder().id(2).title("Title").description("Description").build());
         generator.close();
         assertEquals("xml must match",
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<?xml version=\"1.0\"?>" +
                         "<documents>" +
                         "<document><id>1</id><title>Title</title><description>Description</description></document>" +
                         "<document><id>2</id><title>Title</title><description>Description</description></document>" +
@@ -44,18 +46,19 @@ public class XmlEventLimitGeneratorTest {
 
     @Test
     public void testValidXmlForTwoWithLimitExceeded() throws Exception {
-        final StringBuffer buffer = new StringBuffer(200);
-        final XMLGenerator<Document> generator = newGenerator(200, buffer);
+        final StringBuffer buffer = new StringBuffer(300);
+        final XMLGenerator<Document> generator = newGenerator(80, buffer);
         generator.push(Document.builder().id(1).title("Title").description("Description").build());
         generator.push(Document.builder().id(2).title("Title").description("Description").build());
         generator.close();
+        System.out.println(buffer.toString());
         assertEquals("xml must match",
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<?xml version=\"1.0\"?>" +
                         "<documents>" +
                         "<document><id>1</id><title>Title</title><description>Description</description></document>" +
                         "</documents>" +
                         "" +
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                        "<?xml version=\"1.0\"?>" +
                         "<documents>" +
                         "<document><id>2</id><title>Title</title><description>Description</description></document>" +
                         "</documents>",
@@ -106,7 +109,7 @@ public class XmlEventLimitGeneratorTest {
                 }, new XMLEventLimitGenerator.DocumentWriter() {
             @Override
             public void write(final byte[] xml) {
-                buffer.append(new String(xml));
+                buffer.append(new String(xml, Charset.forName("utf8")));
             }
         }
         );

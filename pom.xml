@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.sh0k</groupId>
+    <groupId>com.github.dweidenfeld</groupId>
     <artifactId>xml-event-limit-generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <description>

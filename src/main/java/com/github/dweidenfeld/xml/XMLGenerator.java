@@ -1,4 +1,4 @@
-package de.sh0k.xml;
+package com.github.dweidenfeld.xml;
 
 /**
  * XML generator interface.
@@ -16,7 +16,7 @@ public interface XMLGenerator<T> {
     /**
      * Close all writers and flushes the last content (if there is some).
      *
-     * @throws de.sh0k.xml.XMLException if the writers cannot be closed gracefully
+     * @throws XMLException if the writers cannot be closed gracefully
      */
     void close() throws XMLException;
 }

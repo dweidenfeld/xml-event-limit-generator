@@ -1,4 +1,4 @@
-package de.sh0k.xml;
+package com.github.dweidenfeld.xml;
 
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;

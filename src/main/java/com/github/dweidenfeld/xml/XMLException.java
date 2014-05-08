@@ -1,4 +1,4 @@
-package de.sh0k.xml;
+package com.github.dweidenfeld.xml;
 
 /**
  * General exception for xml handling.
