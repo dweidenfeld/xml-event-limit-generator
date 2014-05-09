@@ -37,6 +37,11 @@ public class XMLEventLimitGenerator<T> implements XMLGenerator<T> {
     private final DocumentWriter documentWriter;
 
     /**
+     * The encoding that will be used. (default to utf-8)
+     */
+    private final String encoding;
+
+    /**
      * The factor of which every document size is multiplied for automatic size generation.
      */
     private final double exceptionFactor;
@@ -77,7 +82,7 @@ public class XMLEventLimitGenerator<T> implements XMLGenerator<T> {
      */
     public XMLEventLimitGenerator(final long maxSize, final String rootNode, final DocumentMapper<T> documentMapper,
                                   final DocumentWriter documentWriter) throws XMLException {
-        this(maxSize, rootNode, documentMapper, documentWriter, 1.1);
+        this(maxSize, rootNode, documentMapper, documentWriter, "UTF-8", 1.1);
     }
 
     /**
@@ -87,19 +92,22 @@ public class XMLEventLimitGenerator<T> implements XMLGenerator<T> {
      * @param rootNode        {@link #rootNode}
      * @param documentMapper  {@link #documentMapper}
      * @param documentWriter  {@link #documentWriter}
+     * @param encoding        {@link #encoding}
      * @param exceptionFactor {@link #exceptionFactor}
      * @throws XMLException XML cannot be streamed (or opened)
      */
     public XMLEventLimitGenerator(final long maxSize, final String rootNode, final DocumentMapper<T> documentMapper,
-                                  final DocumentWriter documentWriter, final double exceptionFactor)
+                                  final DocumentWriter documentWriter, final String encoding,
+                                  final double exceptionFactor)
             throws XMLException {
         this.maxSize = maxSize;
         this.rootNode = rootNode;
+        this.encoding = encoding;
         this.exceptionFactor = exceptionFactor;
         this.documentMapper = documentMapper;
         this.documentWriter = documentWriter;
         os = new ByteArrayOutputStream();
-        writer = getWriter(os);
+        writer = getWriter(os, encoding);
     }
 
     /**
@@ -109,13 +117,13 @@ public class XMLEventLimitGenerator<T> implements XMLGenerator<T> {
      * @return a new instance of {@link javax.xml.stream.XMLEventWriter}
      * @throws XMLException If the writer cannot be instantiated
      */
-    private XMLEventWriter getWriter(final OutputStream stream) throws XMLException {
+    private XMLEventWriter getWriter(final OutputStream stream, final String encoding) throws XMLException {
         xmlEventFactory = XMLEventFactory.newInstance();
         final XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
         final XMLEventWriter writer;
         try {
-            writer = xmlOutputFactory.createXMLEventWriter(stream);
-            writer.add(xmlEventFactory.createStartDocument("UTF-8", "1.0"));
+            writer = xmlOutputFactory.createXMLEventWriter(stream, encoding);
+            writer.add(xmlEventFactory.createStartDocument(encoding, "1.0"));
             writer.add(xmlEventFactory.createStartElement("", "", rootNode));
         } catch (final XMLStreamException e) {
             throw new XMLException(e);
@@ -154,7 +162,7 @@ public class XMLEventLimitGenerator<T> implements XMLGenerator<T> {
             }
             resetWriter();
             os = new ByteArrayOutputStream();
-            writer = getWriter(os);
+            writer = getWriter(os, encoding);
         }
         try {
             documentMapper.map(writer, xmlEventFactory, document);

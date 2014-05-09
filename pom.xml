@@ -7,6 +7,8 @@
     <groupId>com.github.dweidenfeld</groupId>
     <artifactId>xml-event-limit-generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
+    <name>XML Event Limit Generator</name>
     <description>
         The XmlEventLimitGenerator is a Java library to generate xml strings.
         You push documents (or objects, like you want) to the xml generator and the generator proceeds the pushed document.
@@ -15,6 +17,35 @@
         This max size relates to the average document size, that is calculated on the fly, so there is no 100% guarantee,
         that no xml string will pass the max size, but there is a factor that can be specified as buffer.
     </description>
+    
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/dweidenfeld/xml-event-limit-generator</url>
+        <connection>scm:git:https://github.com/dweidenfeld/xml-event-limit-generator.git</connection>
+        <developerConnection>scm:git:https://github.com/dweidenfeld/xml-event-limit-generator.git</developerConnection>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>sonatype.snapshots</id>
+            <name>Sonatype Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>sonatype.releases</id>
+            <name>Sonatype Releases</name>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
 
     <developers>
         <developer>
@@ -23,6 +54,10 @@
             <email>dom.weidenfeld@gmail.com</email>
         </developer>
     </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -38,4 +73,32 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
