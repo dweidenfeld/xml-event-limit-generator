@@ -32,20 +32,20 @@
         <developerConnection>scm:git:https://github.com/dweidenfeld/xml-event-limit-generator.git</developerConnection>
     </scm>
 
-    <repositories>
-        <repository>
+    <distributionManagement>
+        <snapshotRepository>
             <id>sonatype.snapshots</id>
             <name>Sonatype Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <layout>default</layout>
-        </repository>
+        </snapshotRepository>
         <repository>
             <id>sonatype.releases</id>
             <name>Sonatype Releases</name>
             <url>https://oss.sonatype.org/content/repositories/releases/</url>
             <layout>default</layout>
         </repository>
-    </repositories>
+    </distributionManagement>
 
     <developers>
         <developer>
