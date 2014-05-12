@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.dweidenfeld</groupId>
@@ -9,13 +10,15 @@
     <name>XML Event Limit Generator</name>
     <description>
         The XmlEventLimitGenerator is a Java library to generate xml strings.
-        You push documents (or objects, like you want) to the xml generator and the generator proceeds the pushed document.
+        You push documents (or objects, like you want) to the xml generator and the generator proceeds the pushed
+        document.
         While the push sequence it automatically generates an average size of all documents.
         The benefit of this library is, that you can generate xml strings with a predefined max size.
-        This max size relates to the average document size, that is calculated on the fly, so there is no 100% guarantee,
+        This max size relates to the average document size, that is calculated on the fly, so there is no 100%
+        guarantee,
         that no xml string will pass the max size, but there is a factor that can be specified as buffer.
     </description>
-    
+
     <licenses>
         <license>
             <name>MIT</name>
@@ -28,7 +31,7 @@
         <url>https://github.com/dweidenfeld/xml-event-limit-generator</url>
         <connection>scm:git:git@github.com:dweidenfeld/xml-event-limit-generator.git</connection>
         <developerConnection>scm:git:git@github.com:dweidenfeld/xml-event-limit-generator.git</developerConnection>
-  </scm>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -82,6 +85,23 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.scm</groupId>
+                        <artifactId>maven-scm-api</artifactId>
+                        <version>1.9</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.maven.scm</groupId>
+                        <artifactId>maven-scm-provider-gitexe</artifactId>
+                        <version>1.9</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
