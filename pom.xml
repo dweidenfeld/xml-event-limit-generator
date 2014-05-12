@@ -31,19 +31,20 @@
         <url>https://github.com/dweidenfeld/xml-event-limit-generator</url>
         <connection>scm:git:git@github.com:dweidenfeld/xml-event-limit-generator.git</connection>
         <developerConnection>scm:git:git@github.com:dweidenfeld/xml-event-limit-generator.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
         <snapshotRepository>
-            <id>sonatype.snapshots</id>
+            <id>sonatype-nexus-snapshots</id>
             <name>Sonatype Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <layout>default</layout>
         </snapshotRepository>
         <repository>
-            <id>sonatype.releases</id>
-            <name>Sonatype Releases</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+            <id>sonatype-nexus-staging</id>
+            <name>Sonatype Staging</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
             <layout>default</layout>
         </repository>
     </distributionManagement>
