@@ -17,6 +17,7 @@
         guarantee,
         that no xml string will pass the max size, but there is a factor that can be specified as buffer.
     </description>
+    <url>https://github.com/dweidenfeld/xml-event-limit-generator</url>
 
     <licenses>
         <license>
