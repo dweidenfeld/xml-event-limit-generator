@@ -4,7 +4,7 @@
 
     <groupId>com.github.dweidenfeld</groupId>
     <artifactId>xml-event-limit-generator</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <name>XML Event Limit Generator</name>
     <description>
@@ -31,7 +31,7 @@
         <url>https://github.com/dweidenfeld/xml-event-limit-generator</url>
         <connection>scm:git:git@github.com:dweidenfeld/xml-event-limit-generator.git</connection>
         <developerConnection>scm:git:git@github.com:dweidenfeld/xml-event-limit-generator.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>xml-event-limit-generator-1.0.1</tag>
     </scm>
 
     <distributionManagement>
