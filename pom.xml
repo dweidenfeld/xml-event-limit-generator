@@ -4,7 +4,7 @@
 
     <groupId>com.github.dweidenfeld</groupId>
     <artifactId>xml-event-limit-generator</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>XML Event Limit Generator</name>
     <description>
